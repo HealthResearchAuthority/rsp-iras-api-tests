@@ -24,7 +24,7 @@ jobs:
           customCommand: 'install newman -g'
 
       - script: |
-          newman run $(Build.Repository.LocalPath)/postmancollection/*.json -x -r junit --reporter-junit-export TestResults/API_Test_Report.xml
+          newman run $(Build.Repository.LocalPath)/postmancollection/postman_collection.json -x -r junit --reporter-junit-export TestResults/API_Test_Report.xml
         displayName: 'Run Postman API Tests'
 
       - task: PublishBuildArtifacts@1
