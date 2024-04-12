@@ -25,9 +25,10 @@ jobs:
 
       - script: |
           newman run $(Build.Repository.LocalPath)/postmancollection/*.json -x -r junit --reporter-junit-export TestResults/API_Test_Report.xml
-        displayName: 'Postman API tests running'
+        displayName: 'Run Postman API Tests'
 
       - task: PublishBuildArtifacts@1
+        displayName: Publish API Test Report
         inputs:
           PathtoPublish: '$(Build.Repository.LocalPath)/TestResults'
           ArtifactName: 'API_Test_Report.xml'
