@@ -1,0 +1,467 @@
+{
+	"info": {
+		"_postman_id": "96711566-4cdf-4c7a-848f-fd1a2ffb3a8b",
+		"name": "POC Pet API Example",
+		"description": "POC with simple examples of GET, POST and DELTE requests with test assertions.  \nUsing a demo API sourced here - [https://petstore.swagger.io/](https://petstore.swagger.io/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34072252",
+		"_collection_link": "https://pa-hra-future-iras.postman.co/workspace/HRA-Future-IRAS-API-Tests~061254ef-c8e1-4107-a99d-921da5bc2b51/collection/34010928-96711566-4cdf-4c7a-848f-fd1a2ffb3a8b?action=share&source=collection_link&creator=34072252"
+	},
+	"item": [
+		{
+			"name": "Success",
+			"item": [
+				{
+					"name": "Add Pet Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(pm.response.json()).to.be.an('object');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1234509876,\r\n  \"category\": {\r\n    \"id\": 23,\r\n    \"name\": \"Pig\"\r\n  },\r\n  \"name\": \"Percy\",\r\n  \"photoUrls\": [],\r\n  \"tags\": [],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate that the response code should be 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Save response as variable\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"// Validate that the response is json object\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(response).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"// Validate that the Response JSON has the correct structure\r",
+									"pm.test(\"Response to have correct Property Structure\", function () {\r",
+									"    pm.expect(response).to.have.property('id');\r",
+									"    pm.expect(response).to.have.property('category');\r",
+									"    pm.expect(response.category).to.be.an('object');\r",
+									"    pm.expect(response).to.have.property('name');\r",
+									"    pm.expect(response).to.have.property('photoUrls');\r",
+									"    pm.expect(response.photoUrls).to.be.an('array');\r",
+									"    pm.expect(response).to.have.property('tags');\r",
+									"    pm.expect(response.tags).to.be.an('array');\r",
+									"    pm.expect(response).to.have.property('status');\r",
+									"});\r",
+									"\r",
+									"// Validate the response returns the expected property values\r",
+									"pm.test(\"Response returns expected values\", function () {\r",
+									"    pm.expect(response.id).to.eql(1234509876);\r",
+									"    pm.expect(response.category.id).to.eql(23);\r",
+									"    pm.expect(response.category.name).to.eql('Pig');\r",
+									"    pm.expect(response.name).to.eql('Percy');\r",
+									"    pm.expect(response.photoUrls).to.be.empty;\r",
+									"    pm.expect(response.tags).to.be.empty;\r",
+									"    pm.expect(response.status).to.eql('available');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/1234509876",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"1234509876"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pet Success",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code also provided in Response body\", function () {\r",
+									"    pm.expect(response).to.have.property('code');\r",
+									"    pm.expect(response.code).to.eql(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return type is 'unkown'\", function () {\r",
+									"    pm.expect(response).to.have.property('type');\r",
+									"    pm.expect(response.type).to.eql('unknown');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return message is the pet Id supplied\", function () {\r",
+									"    pm.expect(response).to.have.property('message');\r",
+									"    pm.expect(response.message).to.eql('1234509876');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/1234509876",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"1234509876"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation",
+			"item": [
+				{
+					"name": "Add Pet Invalid Input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 500\", function () {\r",
+									"    pm.response.to.have.status(500);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(response).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code also provided in Response body\", function () {\r",
+									"    pm.expect(response).to.have.property('code');\r",
+									"    pm.expect(response.code).to.eql(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return type is 'unkown'\", function () {\r",
+									"    pm.expect(response).to.have.property('type');\r",
+									"    pm.expect(response.type).to.eql('unknown');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The expected message is returnd\", function () {\r",
+									"    pm.expect(response).to.have.property('message');\r",
+									"    pm.expect(response.message).to.eql('something bad happened')\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"test\",\r\n  \"category\": {\r\n    \"id\": 23,\r\n    \"name\": \"Pig\"\r\n  },\r\n  \"name\": \"Percy\",\r\n  \"photoUrls\": [],\r\n  \"tags\": [],\r\n  \"status\": \"available\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/pet",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(response).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned Error Code is '1'\", function () {\r",
+									"    pm.expect(response).to.have.property('code');\r",
+									"    pm.expect(response.code).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return type is 'error'\", function () {\r",
+									"    pm.expect(response).to.have.property('type');\r",
+									"    pm.expect(response.type).to.eql('error');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return message is 'Pet not found'\", function () {\r",
+									"    pm.expect(response).to.have.property('message');\r",
+									"    pm.expect(response.message).to.eql('Pet not found');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"000000000"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Pet Invalid Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(response).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code also provided in Response body\", function () {\r",
+									"    pm.expect(response).to.have.property('code');\r",
+									"    pm.expect(response.code).to.eql(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return type is 'unkown'\", function () {\r",
+									"    pm.expect(response).to.have.property('type');\r",
+									"    pm.expect(response.type).to.eql('unknown');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return message is a Number Format Exception\", function () {\r",
+									"    pm.expect(response).to.have.property('message');\r",
+									"    pm.expect(response.message).to.satisfy(message => message.startsWith('java.lang.NumberFormatException'));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/test",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pet Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Expect no response body to be returned\", function () {\r",
+									"    pm.expect(pm.response.body).to.be.undefined;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/1234509876",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"1234509876"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Pet Invalid Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response is a json object\", function () {\r",
+									"    pm.expect(response).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code also provided in Response body\", function () {\r",
+									"    pm.expect(response).to.have.property('code');\r",
+									"    pm.expect(response.code).to.eql(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return type is 'unkown'\", function () {\r",
+									"    pm.expect(response).to.have.property('type');\r",
+									"    pm.expect(response.type).to.eql('unknown');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Return message is a Number Format Exception\", function () {\r",
+									"    pm.expect(response).to.have.property('message');\r",
+									"    pm.expect(response.message).to.satisfy(message => message.startsWith('java.lang.NumberFormatException'));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pet/test",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pet",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://petstore.swagger.io/v2",
+			"type": "string"
+		}
+	]
+}
