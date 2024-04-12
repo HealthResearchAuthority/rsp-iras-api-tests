@@ -1,0 +1,34 @@
+# Standalone Pipeline to run Automated API tests
+# Using rsp-iras-api-tests repo
+
+name: Run API Tests
+
+variables:
+  CI: true
+
+trigger:
+- main
+
+jobs: 
+  - job: Run_Automated_API_Tests
+    timeoutInMinutes: 10
+    pool:
+      vmImage: ubuntu-latest
+     
+    steps:
+      - task: Npm@1
+        displayName: 'Install Dependencies'
+        inputs:
+          command: custom
+          verbose: false
+          customCommand: 'install newman -g'
+
+      - script: |
+          newman run $(Build.Repository.LocalPath)/postmancollection/*.json -x -r junit --reporter-junit-export TestResults/API_Test_Report.xml
+        displayName: 'Postman API tests running'
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.Repository.LocalPath)/TestResults'
+          ArtifactName: 'API_Test_Report.xml'
+          publishLocation: 'Container'
