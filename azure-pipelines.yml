@@ -25,7 +25,7 @@ jobs:
 
       - script: |
           npm install -g newman-reporter-html
-        displayName: 'Install Dependency to generate HTML API report'
+        displayName: 'Install Dependency to generate HTML report'
 
       - script: |
           newman run $(Build.Repository.LocalPath)/postmancollection/postman_collection.json -r html --reporter-html-export TestResults/API_Test_Report.html
