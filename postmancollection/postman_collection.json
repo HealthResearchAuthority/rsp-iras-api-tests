@@ -131,7 +131,7 @@
 								"exec": [
 									"const response = pm.response.json();\r",
 									"\r",
-									"pm.test.skip(\"Status code is 200\", function () {\r",
+									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
