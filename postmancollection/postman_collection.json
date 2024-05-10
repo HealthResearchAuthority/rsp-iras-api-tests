@@ -132,7 +132,7 @@
 									"const response = pm.response.json();\r",
 									"\r",
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
+									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Status code also provided in Response body\", function () {\r",
