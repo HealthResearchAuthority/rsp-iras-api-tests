@@ -24,7 +24,7 @@ jobs:
           customCommand: 'install newman -g'
 
       - script: |
-          npm install -g newman-reporter-htmlextra
+          npm install -g newman-reporter-html
         displayName: 'Install Dependency to generate HTML API report'
 
       - script: |
