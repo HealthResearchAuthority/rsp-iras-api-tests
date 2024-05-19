@@ -3,38 +3,34 @@
 
 name: Run API Tests
 
-variables:
-  CI: true
-
 trigger:
-- main
+  - main
 
-jobs: 
-  - job: Run_Automated_API_Tests
-    timeoutInMinutes: 10
-    pool:
-      vmImage: ubuntu-latest
-     
-    steps:
-      - task: Npm@1
-        displayName: 'Install Dependencies'
-        inputs:
-          command: custom
-          verbose: false
-          customCommand: 'install newman -g'
+schedules:
+  - cron: '0 0 * * Mon-Fri'
+    displayName: 'Nightly run - full suite'
+    branches:
+      include: 
+      - main
 
-      - script: |
-          npm install -g newman-reporter-htmlextra
-        displayName: 'Install Dependency to generate HTML report'
+pool:
+  vmImage: "Ubuntu-latest"
 
-      - script: |
-          newman run $(Build.Repository.LocalPath)/postmancollection/postman_collection.json -r htmlextra --reporter-htmlextra-export TestResults/API_Test_Report.html
-        displayName: 'Run Postman API Tests'
+parameters:
+  - name: devops_library_branch
+    displayName: DevOps Library Branch
+    type: string
+    default: main
 
-      - task: PublishBuildArtifacts@1
-        displayName: Publish API Test Report
-        condition: always()
-        inputs:
-          PathtoPublish: '$(Build.Repository.LocalPath)/TestResults'
-          ArtifactName: 'API_Test_Report'
-          publishLocation: 'Container'
+resources:
+  repositories:
+    - repository: library
+      type: git
+      name: DevOps/rsp-azure-devops-library
+      ref: ${{ parameters.devops_library_branch }}
+
+stages:
+  - stage: APIPostmanTests
+    displayName: API Postman Tests
+    jobs:
+      - template: jobs/api_tests.yaml@library
