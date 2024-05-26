@@ -33,11 +33,11 @@ To run the API test scripts in the Azure pipeline:
 - Select the desired DevOps Library branch, main by default
 - Click the Run button
 
-![Select and Run](resources/images/selectAndRun.png)  
+![Select and Run](resources/images/selectAndRun.png =400x800)  
 
 The test run will produce an HTML Test Report as a Pipeline artifact, this artifact is available to download and view. 
 
-![Artifact Report](resources/images/artifactReport.png)  
+![Artifact Report](resources/images/artifactReport.png =400x250)  
 
 This artifact will also be published to the teams SharePoint space [here](https://healthresearchauthority.sharepoint.com/:f:/r/sites/Future-IRAS/Testing/Test%20Reports?csf=1&web=1&e=8jF7Ic)  
 &nbsp;  
