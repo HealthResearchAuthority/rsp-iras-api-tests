@@ -23,8 +23,11 @@ parameters:
     default: main
   - name: tests_run_timeout
     type: number
-    displayName: Playwright Tests Run Timeout
+    displayName: API Tests Run Timeout
     default: 10
+
+variables:
+  - group: 'Test Automation'
 
 resources:
   repositories:
