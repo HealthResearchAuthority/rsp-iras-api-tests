@@ -38,7 +38,7 @@ stages:
     displayName: API Postman Tests
     jobs:
       - template: jobs/api_tests.yaml@library
-      parameters:
-        devops_library_branch: ${{ parameters.devops_library_branch}}
+        parameters:
+          devops_library_branch: ${{ parameters.devops_library_branch}}
           upload_to_sharepoint: true
           tests_run_timeout: ${{ parameters.tests_run_timeout }}
