@@ -21,6 +21,10 @@ parameters:
     displayName: DevOps Library Branch
     type: string
     default: main
+  - name: tests_run_timeout
+    type: number
+    displayName: Playwright Tests Run Timeout
+    default: 10
 
 resources:
   repositories:
@@ -34,3 +38,6 @@ stages:
     displayName: API Postman Tests
     jobs:
       - template: jobs/api_tests.yaml@library
+      parameters:
+          upload_to_sharepoint: true
+          tests_run_timeout: ${{ parameters.tests_run_timeout }}
