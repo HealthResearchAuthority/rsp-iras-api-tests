@@ -15,7 +15,7 @@ Put [X] inside the [] to make the box ticked
 - [] New Tests
 - [] Updating Tests
 - [] Fixing Tests
-- [] Framework Improvements
+- [] CI/CD Improvements
 
 ## Solution
 
@@ -33,4 +33,4 @@ Put [X] inside the [] to make the box ticked
 - [] You are using the correct naming conventions
 - [] Added files have been placed correctly within the projects folder structure
 - [] There is no dead code e.g. no "TODO" comments left etc
-- [] Any Framework updates have been explained and demonstrated to the team
+- [] Any CI/CD updates have been explained and demonstrated to the team
