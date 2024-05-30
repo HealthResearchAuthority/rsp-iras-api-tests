@@ -28,7 +28,7 @@ What work was completed to cover off the story?
 Put [X] inside the [] to make the box ticked
 
 - [] You have run the Pipeline jobs against this branch successfully
-- [] Any new or updated tests add value, i.e. assert the right thing?
+- [] Any new or updated tests add value, i.e. provide correct assurances, fail when expected and log errors appropriately
 - [] No duplicate tests have been added
 - [] You are using the correct naming conventions
 - [] Added files have been placed correctly within the projects folder structure
