@@ -16,6 +16,7 @@ Put [X] inside the [] to make the box ticked
 - [] Updating Tests
 - [] Fixing Tests
 - [] CI/CD Improvements
+- [] Documentation
 
 ## Solution
 
