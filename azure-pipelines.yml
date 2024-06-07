@@ -4,14 +4,15 @@
 name: Run API Tests
 
 trigger:
-  - main
+  - feature/rsp-830-postman-pipeline-schedule-trigger
 
 schedules:
-  - cron: '0 0 * * Mon-Fri'
+  - cron: '55 09 * * Mon-Fri'
     displayName: 'Nightly run - full suite'
     branches:
       include: 
-      - main
+      - feature/rsp-830-postman-pipeline-schedule-trigger
+    always: true
 
 pool:
   vmImage: "Ubuntu-latest"
