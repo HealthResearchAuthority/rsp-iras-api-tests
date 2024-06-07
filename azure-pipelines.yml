@@ -4,14 +4,14 @@
 name: Run API Tests
 
 trigger:
-  - feature/rsp-830-postman-pipeline-schedule-trigger
+  - main
 
 schedules:
-  - cron: '55 09 * * Mon-Fri'
+  - cron: '0 0 * * Mon-Fri'
     displayName: 'Nightly run - full suite'
     branches:
       include: 
-      - feature/rsp-830-postman-pipeline-schedule-trigger
+      - main
     always: true
 
 pool:
