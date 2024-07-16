@@ -16,7 +16,7 @@
 						"exec": [
 							"// Validate that the response code should be 200\r",
 							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.status(201);\r",
 							"});\r",
 							"\r",
 							"// Validate that the response is json object\r",
