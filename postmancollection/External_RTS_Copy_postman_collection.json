@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "8ebc3324-6b06-4f07-ae34-336a6968205a",
+		"name": "External RTS Copy",
+		"description": "This Collection Contains Endpoints for the External RTS API.\n\nIt contains an array of endpoints which enables us to fetch data for organisations from RTS.  \nSuch as:\n\n- Oid's\n    \n- Roles\n    \n- Sites\n    \n- Termsets\n    \n\nEach of the endpoints will return a list of the relevant data in the response.  \nIn order to filter the list to include specific records that are relevant to our needs, we will need to know and enter the relevant identifier in the request parameters.\n\nThe Swagger Doc for this API can be found here: [https://test.rts.nihr.ac.uk/api/swagger/index.html](https://test.rts.nihr.ac.uk/api/swagger/index.html)\n\nThe Collection includes a _**Login**_ Post request, this request generates the Bearer token that is used to authorize all of the remaining requests in the Collection.  \nThe requests post-response scriptwill store the bearer token to a variable. You can view the script in the **Script** tab of the _**Login**_ request  \nThe variable is then set as the Bearer token in each of the remaining requests in the Collection.  \nYou can view this by selecting a request (e.g. _**Oid List**_) and selecting the Authorization tab.\n\nTo generate a valid Bearer token simply run the _**Login**_ request.  \nThen run any of the other requests in the collection.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38696301",
+		"_collection_link": "https://pa-hra-future-iras.postman.co/workspace/HRA-Future-IRAS-API-Tests~061254ef-c8e1-4107-a99d-921da5bc2b51/collection/38696301-8ebc3324-6b06-4f07-ae34-336a6968205a?action=share&source=collection_link&creator=38696301"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(pm.response.text());",
+							"pm.collectionVariables.set(\"bearerToken\", jsonData[\"access_token\"]);",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.access_token).to.exist;",
+							"    pm.expect(responseData.scope).to.exist;",
+							"    pm.expect(responseData.token_type).to.exist;",
+							"    pm.expect(responseData.expires_in).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Access token is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.access_token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Access token should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token type is 'bearer'\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.token_type).to.equal('Bearer');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Expires in is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.expires_in).to.exist;",
+							"    pm.expect(responseData.expires_in).to.be.a('number');",
+							"    pm.expect(responseData.expires_in).to.be.at.least(0, \"Expires in should be a non-negative integer\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authority",
+						"value": "test.rts.nihr.ac.uk"
+					},
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-GB,en-US;q=0.9,en;q=0.8"
+					},
+					{
+						"key": "authorization",
+						"value": "{{extAuth}}"
+					},
+					{
+						"key": "content-type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "cookie",
+						"value": "_ga=GA1.3.228279728.1652284326"
+					},
+					{
+						"key": "origin",
+						"value": "https://test.rts.nihr.ac.uk"
+					},
+					{
+						"key": "referer",
+						"value": "https://test.rts.nihr.ac.uk/api/swagger/index.html"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"101\", \"Google Chrome\";v=\"101\""
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\""
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"
+					},
+					{
+						"key": "x-requested-with",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "openid+profile+email",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/auth/token",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"token"
+					]
+				},
+				"description": "Used to provide the Bearer token which authorises the remaining requests in the Collection.  \nMust be run before any further requests are made in the Collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Organisation Role List_JSON Schema validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validate that the response code should be 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validate that the response is json object\r",
+							"pm.test(\"Response is a json object\", function () {\r",
+							"    pm.expect(pm.response.json()).to.be.an('object');\r",
+							"    var responseData = pm.response.json();\r",
+							"console.log(responseData)\r",
+							"});\r",
+							"var jsonSchema = { \r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"Version\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"StatusCode\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"ErrorMessage\": {\r",
+							"      \"type\": \"null\"\r",
+							"    },\r",
+							"    \"Result\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"RtsOrganisations\": {\r",
+							"          \"type\": \"null\"\r",
+							"        },\r",
+							"        \"RtsOrganisationSites\": {\r",
+							"          \"type\": \"null\"\r",
+							"        },\r",
+							"        \"RtsOrganisationRoles\": {\r",
+							"          \"type\": \"array\",         \r",
+							"          \"items\": {\r",
+							"            \"required\": [\r",
+							"              \"OrgIdentifier\",\r",
+							"              \"RoleType\",\r",
+							"              \"Status\",\r",
+							"              \"ParentIdentifier\",\r",
+							"              \"EffectiveStartDate\",\r",
+							"              \"CreatedDate\",\r",
+							"              \"ModifiedDate\"\r",
+							"            ],\r",
+							"            \"properties\": {\r",
+							"              \"OrgIdentifier\": {\r",
+							"                \"type\": \"string\"                \r",
+							"              },\r",
+							"              \"RoleType\": {\r",
+							"                \"type\": \"string\"\r",
+							"              },\r",
+							"              \"Status\": {\r",
+							"                \"type\": \"string\"\r",
+							"              },\r",
+							"              \"ParentIdentifier\": {\r",
+							"                \"type\": [\"string\", \"null\"]\r",
+							"              },\r",
+							"              \"EffectiveStartDate\": {\r",
+							"                \"type\": \"string\"\r",
+							"              },\r",
+							"              \"EffectiveEndDate\": {\r",
+							"               \"type\": \"null\"\r",
+							"              },\r",
+							"              \"CreatedDate\": {\r",
+							"                \"type\": \"string\"\r",
+							"              },\r",
+							"              \"ModifiedDate\": {\r",
+							"                \"type\": \"string\"\r",
+							"              }\r",
+							"            }\r",
+							"          }\r",
+							"        },\r",
+							"        \"RtsOids\": {\r",
+							"            \"type\": \"null\"\r",
+							"        },\r",
+							"        \"RtsTermsets\": {\r",
+							"           \"type\": \"null\"\r",
+							"        },\r",
+							"        \"TotalRecords\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"PageSize\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"CurrentPageNumber\": {\r",
+							"          \"type\": \"number\"\r",
+							"        },\r",
+							"        \"Result\": {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"Result\": {\r",
+							"              \"type\": \"number\"\r",
+							"            },\r",
+							"            \"IsSuccess\": {\r",
+							"              \"type\": \"boolean\"\r",
+							"            },\r",
+							"            \"IsFailed\": {\r",
+							"              \"type\": \"boolean\"\r",
+							"            },\r",
+							"            \"Errors\": {\r",
+							"                \"type\": \"null\"\r",
+							"            },\r",
+							"            \"DetailedErrors\": {\r",
+							"                \"type\": \"null\"\r",
+							"            },\r",
+							"            \"DetailedErrors_V2\": {\r",
+							"               \"type\": \"null\"\r",
+							"            },\r",
+							"            \"Entity\": {\r",
+							"               \"type\": \"null\"\r",
+							"            },\r",
+							"            \"isStale\": {\r",
+							"              \"type\": \"boolean\"\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"Result\",\r",
+							"            \"IsSuccess\",\r",
+							"            \"IsFailed\",\r",
+							"            \"Errors\",\r",
+							"            \"DetailedErrors\",\r",
+							"            \"DetailedErrors_V2\",\r",
+							"            \"Entity\",\r",
+							"            \"isStale\"\r",
+							"          ]\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"RtsOrganisations\",\r",
+							"        \"RtsOrganisationSites\",\r",
+							"        \"RtsOrganisationRoles\",\r",
+							"        \"RtsOids\",\r",
+							"        \"RtsTermsets\",\r",
+							"        \"TotalRecords\",\r",
+							"        \"PageSize\",\r",
+							"        \"CurrentPageNumber\",\r",
+							"        \"Result\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"Version\",\r",
+							"    \"StatusCode\",\r",
+							"    \"ErrorMessage\",\r",
+							"    \"Result\"\r",
+							"  ]\r",
+							"}\r",
+							" \r",
+							"\r",
+							"pm.test(\"JSON Schema Validation\", function () {\r",
+							"    var Ajv = require('ajv');\r",
+							"    var ajv = new Ajv();\r",
+							"    var responseData = pm.response.json(); // Moved responseData inside the test function\r",
+							"    \r",
+							"    var valid = ajv.validate(jsonSchema, responseData);\r",
+							"    console.log(\"jsonSchema: \"+responseData.Result.RtsOrganisationRoles[0].OrgIdentifier);\r",
+							"\r",
+							"    // If validation fails, construct a detailed error message\r",
+							"    if (!valid) {\r",
+							"        let errorMessages = ajv.errors.map(error => {\r",
+							"            return `Property '${error.instancePath}' ${error.message}. Schema path: ${error.schemaPath}`;\r",
+							"        }).join(\"\\n\");\r",
+							"\r",
+							"        pm.expect.fail(`Schema validation failed:\\n${errorMessages}`);\r",
+							"    } else {\r",
+							"        pm.expect(valid).to.be.true;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/v1/Rts/GetOrganisationRoleList?pageNumber=2&pageSize=10&modifiedDate=2022-05-01",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Rts",
+						"GetOrganisationRoleList"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "modifiedDate",
+							"value": "2022-05-01"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "extAuth",
+			"value": "Basic QmtIRVBxR3RpdzFSaUlIbTVMM1JBem9tU3pzYTpSWG1MQWdjNkxKTjRBTjZzTmRyY0NwQ0NBZDBh"
+		},
+		{
+			"key": "bearerToken",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://test.rts.nihr.ac.uk"
+		}
+	]
+}
